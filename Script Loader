@@ -1,0 +1,261 @@
+if game.PlaceId == 9840387028 then
+    --Era of Althea--
+  local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+  local win = lib:Window("Astrality Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+  local Farming = win:Tab("Farming")
+
+  local Player = win:Tab("Player")
+
+  local TP = win:Tab("TP")
+
+  local changeclr = win:Tab("Change UI Color")
+
+  local Credits = win:Tab("INFO")
+
+
+  local plyr = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+  Player:Toggle("TpWalk",false, function(t)
+      getgenv().Run = t
+  if getgenv().Run == true then
+      while wait(0.005) and getgenv().Run == true do 
+      plyr.CFrame = plyr.CFrame + plyr.CFrame.lookVector * 1
+      plyr.CFrame = plyr.CFrame + plyr.CFrame.lookVector * 1
+      plyr.CFrame = plyr.CFrame + plyr.CFrame.lookVector * 1
+      end
+  end
+  end)
+
+  Player:Toggle("Inf Jump (might result in kick)",false, function(t)
+
+      local Player = game:GetService'Players'.LocalPlayer;
+      local UIS = game:GetService'UserInputService';
+
+      _G.JumpHeight = 50;
+
+      function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+      UIS.InputBegan:connect(function(UserInput)
+          if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+              Action(Player.Character.Humanoid, function(self)
+                  if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                      Action(self.Parent.HumanoidRootPart, function(self)
+                          self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                      end)
+                  end
+              end)
+          end
+      end)
+  end)
+
+  Player:Toggle("Redeem all codes",false, function()
+      local args = {[1] = "23KLikes!"}
+      game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+           local args = {[1] = "DetestFiveSpins"}
+      game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+
+   local args = {[1] = "DamnMyBad"}
+      game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+
+   local args = {[1] = "1MillionVisits"}
+      game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+
+   local args = {[1] = "BugFixes"}
+      game:GetService("ReplicatedStorage").Remotes.RedeemCode:InvokeServer(unpack(args))
+
+  wait()
+    end)
+
+
+  for i,v in pairs(game.Workspace.Spawns:GetChildren()) do
+      if v.Name == "Town of Tōku" then
+          v.Name = "Town of Toku"
+      end
+  end
+
+  for i,v in pairs(game.Workspace.Spawns:GetChildren()) do
+      if v.Name == "Mazushi Village" then
+          v.Name = "Mazushi Village"
+      end
+  end
+
+  for i,v in pairs(game.Workspace.Spawns:GetChildren()) do
+      if v.Name == "Kōdai" then
+          v.Name = "Kodai"
+      end
+  end
+
+  TP:Dropdown("List of Spawns", {"Town of Toku", "Mazushi Village", "Alfa Kingdom", "Kodai", "Dead Woods"}, function(t)
+      getgenv().selectedTP = t
+  end)
+
+
+  TP:Button("TP", function(t)
+
+      if getgenv().selectedTP == "Mazushi Village" then
+
+          game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Spawns["Mazushi Village"].SpawnLocation.CFrame
+
+      else
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Spawns[getgenv().selectedTP].Part.CFrame
+  end
+
+  end)
+
+  TP:Button("Back to Spawn", function(t)
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Spawns["Mazushi Village"].SpawnLocation.CFrame
+  end)
+
+
+
+
+  changeclr:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+  lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+  end)
+
+
+  Farming:Textbox("NPC Name (cap sensetive)", "String", function(t)
+      getgenv().vName = t
+  end)
+
+
+
+  Farming:Toggle("AutoFarm",false, function(t)
+      getgenv().toggleAutoFarm = t
+      while getgenv().toggleAutoFarm do wait()
+          for i,v in pairs(game.Workspace.NPCS:GetChildren()) do
+              if v.Name == getgenv().vName then
+                  mouse1click()
+                  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
+              end
+          end
+      end
+  end)
+
+
+  --fullbright---
+
+
+
+  Player:Button("fullbright", function()
+
+
+  if not _G.FullBrightExecuted then
+
+    _G.FullBrightEnabled = false
+
+    _G.NormalLightingSettings = {
+      Brightness = game:GetService("Lighting").Brightness,
+      ClockTime = game:GetService("Lighting").ClockTime,
+      FogEnd = game:GetService("Lighting").FogEnd,
+      GlobalShadows = game:GetService("Lighting").GlobalShadows,
+      Ambient = game:GetService("Lighting").Ambient
+    }
+
+    game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+      if game:GetService("Lighting").Brightness ~= 1 and game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness then
+        _G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
+        if not _G.FullBrightEnabled then
+          repeat
+            wait()
+          until _G.FullBrightEnabled
+        end
+        game:GetService("Lighting").Brightness = 1
+      end
+    end)
+
+    game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+      if game:GetService("Lighting").ClockTime ~= 12 and game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime then
+        _G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
+        if not _G.FullBrightEnabled then
+          repeat
+            wait()
+          until _G.FullBrightEnabled
+        end
+        game:GetService("Lighting").ClockTime = 12
+      end
+    end)
+
+    game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+      if game:GetService("Lighting").FogEnd ~= 786543 and game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd then
+        _G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
+        if not _G.FullBrightEnabled then
+          repeat
+            wait()
+          until _G.FullBrightEnabled
+        end
+        game:GetService("Lighting").FogEnd = 786543
+      end
+    end)
+
+    game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+      if game:GetService("Lighting").GlobalShadows ~= false and game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows then
+        _G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
+        if not _G.FullBrightEnabled then
+          repeat
+            wait()
+          until _G.FullBrightEnabled
+        end
+        game:GetService("Lighting").GlobalShadows = false
+      end
+    end)
+
+    game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+      if game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient then
+        _G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
+        if not _G.FullBrightEnabled then
+          repeat
+            wait()
+          until _G.FullBrightEnabled
+        end
+        game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+      end
+    end)
+
+    game:GetService("Lighting").Brightness = 1
+    game:GetService("Lighting").ClockTime = 12
+    game:GetService("Lighting").FogEnd = 786543
+    game:GetService("Lighting").GlobalShadows = false
+    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+
+    local LatestValue = true
+    spawn(function()
+      repeat
+        wait()
+      until _G.FullBrightEnabled
+      while wait() do
+        if _G.FullBrightEnabled ~= LatestValue then
+          if not _G.FullBrightEnabled then
+            game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
+            game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
+            game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
+            game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+            game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
+          else
+            game:GetService("Lighting").Brightness = 1
+            game:GetService("Lighting").ClockTime = 12
+            game:GetService("Lighting").FogEnd = 786543
+            game:GetService("Lighting").GlobalShadows = false
+            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+          end
+          LatestValue = not LatestValue
+        end
+      end
+    end)
+  end
+
+  _G.FullBrightExecuted = true
+  _G.FullBrightEnabled = not _G.FullBrightEnabled
+  end)
+
+
+  --Credits--
+
+
+  Credits:Label("Astrality Hub")
+  Credits:Label("ASTRO#5852")
+  Credits:Label("CarterH#0881")
+
+  Credits:Label("Right ctrl to toggle GUI")
